@@ -6,6 +6,7 @@ from tkinter import filedialog as fd
 from pygame import mixer
 from datetime import datetime, timedelta
 import shutil
+from pathlib import Path
 
 
 from ModalWindow import ModalWindow
@@ -171,6 +172,11 @@ class App(customtkinter.CTk):
             else:
                 tkinter.messagebox.showerror(title='Error', message='Wrong file or directory, choose another one!')
         tkinter.messagebox.showinfo(title='Success', message=f"Copied {num_copies} of files or directories")
+        path = Path(directory)
+        if path.exists():
+            os.startfile(path)
+        else:
+            print("The specified path does not exist")
         
     def generate_files(self):
         
