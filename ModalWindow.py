@@ -1,6 +1,7 @@
 import tkinter
 import customtkinter
 from tkcalendar import Calendar
+import datetime
 
 
 class ModalWindow(customtkinter.CTkToplevel):
@@ -37,9 +38,10 @@ class ModalWindow(customtkinter.CTkToplevel):
                                                   font=customtkinter.CTkFont(size=18, weight="bold"))
         self.banner_text.grid(row=0, column=0, sticky="nsew", ipady=10)
         
+        today = datetime.date.today()
         
         self.cal = Calendar(self.home_frame, font="Arial 12", selectmode='day', locale='en_US',
-                   cursor="hand2", year=2023, month=7, day=3)
+                   cursor="hand2", year=today.year, month=today.month, day=today.day)
         
         self.cal.bind("<<CalendarSelected>>", lambda event: self.getSelection(event, source="calendar"))
         
