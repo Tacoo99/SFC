@@ -40,6 +40,7 @@ class App(customtkinter.CTk):
         
         self.fullPath = ''
         self.check_var = customtkinter.StringVar(value="file")
+        self.fileOrDir = ''
         
 
         # load images with light and dark mode image
@@ -123,14 +124,14 @@ class App(customtkinter.CTk):
         return self.fullPath
     
     def get_file_or_dir(self):
-        fileOrDir = self.check_var.get()
-        self.fileOrDir_checkbox.configure(text=f'Chosen: {fileOrDir}')
+        self.fileOrDir = self.check_var.get()
+        self.fileOrDir_checkbox.configure(text=f'Chosen: {self.fileOrDir}')
         
-        if fileOrDir == 'directory':
+        if self.fileOrDir == 'directory':
             self.button_fileChooser.configure(image=self.folder_image)
             self.filename_entry.configure(placeholder_text="Directory")
             self.button_fileChooser.configure(text="Choose folder")
-        if fileOrDir == 'file':
+        if self.fileOrDir == 'file':
             self.button_fileChooser.configure(image=self.file_image)
             self.filename_entry.configure(placeholder_text="Filename")
             self.button_fileChooser.configure(text="Choose file")
@@ -209,20 +210,31 @@ class App(customtkinter.CTk):
         self.directory_entry.insert(0, filename)
         
     def select_file(self):
-        filetypes = (
-        ('Excel files', '*.xlsx'),
-        ('All files', '*.*')
-    )
-
-        filename = fd.askopenfilename(
-        title='Open a file',
-        initialdir='/',
-        filetypes=filetypes)
+        fileOrDir = self.check_var.get()
+        if fileOrDir == 'file':
+            filetypes = (
+            ('All files', '*.*'),
+        )
+            filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+            self.setFilenameEntry(filename)
+        
+        elif fileOrDir == 'directory':
+            filename2 = fd.askdirectory(
+            title='Select directory',
+        )
+            self.setFilenameEntry(filename2)
+        
+    def setFilenameEntry(self, filename):
+        
         self.set_full_path(filename)
         basename = os.path.basename(filename)
         
         self.filename_entry.delete(0, 'end')
         self.filename_entry.insert(0, basename)
+        
     
     def handleSelectedDate(self, selected_date, source):
         
